@@ -1,6 +1,6 @@
 //
-//  a.cpp
-//  2022-04-16 01:22
+//  f.cpp
+//  2022-04-20 17:20
 //
 //  Created by liznb
 //  
@@ -69,26 +69,31 @@ void file() {
   // freopen("out.txt", "w", stdout);
 #endif
 }
-
+const int N = 1e6 + 10;
+int d[N];
 signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int z; cin >> z;   
-  while (z--) {
-    int n; cin >> n;
-    vector<int> a(n * 2);
-    for (int i = 0; i < n * 2; i++) {
-      cin >> a[i];
-    }
-    sort(a.begin(), a.end());  
-    vector<int> ans;  
-    for (int i = 1; i <= n; i++) {
-      ans.push_back(a[i - 1]);
-      ans.push_back(a[2 * n - i]);
-    }
-    for (auto &it : ans) cout << it << " ";
-    cout << endl;
+  int n; cin >> n;
+  for (int i = 1; i <= n; i++) {
+    int val; cin >> val;
+    d[val] = 1;
   }
+  int limit = 1e6;
+  for (int i = limit; i >= 1; i--) {
+    if (d[i]) continue;
+    int g = 0;
+    for (int j = 2; j * i <= limit; j++) {
+      if (d[j * i] == 0) continue;
+      g = gcd(g, j * i);
+    }
+    if (g == i) d[i] = 1;
+  }
+  int cnt = 0;
+  for (int i = 1; i <= limit; i++) {
+    if (d[i]) cnt++; 
+  }
+  cout << cnt - n;
   return 0;
 }

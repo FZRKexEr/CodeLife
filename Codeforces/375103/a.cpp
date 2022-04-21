@@ -1,9 +1,9 @@
 //
 //  a.cpp
-//  2022-04-16 01:22
+//  2022-04-21 13:56
 //
 //  Created by liznb
-//  
+//  https://codeforces.com/problemset/problem/1656/E
 
 #include <bits/stdc++.h>
 #define int long long
@@ -74,21 +74,7 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int z; cin >> z;   
-  while (z--) {
-    int n; cin >> n;
-    vector<int> a(n * 2);
-    for (int i = 0; i < n * 2; i++) {
-      cin >> a[i];
-    }
-    sort(a.begin(), a.end());  
-    vector<int> ans;  
-    for (int i = 1; i <= n; i++) {
-      ans.push_back(a[i - 1]);
-      ans.push_back(a[2 * n - i]);
-    }
-    for (auto &it : ans) cout << it << " ";
-    cout << endl;
-  }
+   
+   
   return 0;
 }

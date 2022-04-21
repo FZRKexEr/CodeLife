@@ -1,6 +1,6 @@
 //
 //  a.cpp
-//  2022-04-16 01:22
+//  2022-04-19 22:18
 //
 //  Created by liznb
 //  
@@ -74,21 +74,35 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int z; cin >> z;   
+  
+  int z; cin >> z; 
   while (z--) {
-    int n; cin >> n;
-    vector<int> a(n * 2);
-    for (int i = 0; i < n * 2; i++) {
-      cin >> a[i];
+    string a, b;
+    cin >> a >> b;
+    map<char, int> cnt;
+    for (auto &it : b) cnt[it]++;
+    string c; 
+    for (int i = a.length() - 1; i >= 0; i--) {
+      if (cnt[a[i]] == 0) continue;
+      c += a[i];
+      cnt[a[i]]--;
     }
-    sort(a.begin(), a.end());  
-    vector<int> ans;  
-    for (int i = 1; i <= n; i++) {
-      ans.push_back(a[i - 1]);
-      ans.push_back(a[2 * n - i]);
+    reverse(c.begin(), c.end());
+//    cout << c << endl;
+    if (c.length() < b.length()) cout << "NO" << endl;
+    else {
+      int tot = (int) c.length() - (int) b.length();
+      int flag = true;
+      for (int i = 0; i < (int) b.length(); i++) {
+        if (c[tot] != b[i]) {
+          flag = false; 
+          break;
+        }
+        tot++;
+      }
+      if (flag) cout << "YES" << endl;
+      else cout << "NO" << endl;
     }
-    for (auto &it : ans) cout << it << " ";
-    cout << endl;
   }
   return 0;
 }

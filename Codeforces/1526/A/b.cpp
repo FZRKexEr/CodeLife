@@ -1,6 +1,6 @@
 //
-//  a.cpp
-//  2022-04-16 01:22
+//  b.cpp
+//  2022-04-19 13:00
 //
 //  Created by liznb
 //  
@@ -74,21 +74,24 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int z; cin >> z;   
+  vector<int> can(20000, 0); 
+  can[0] = 1;
+  for (int i = 1; i <= 10000; i++) {
+    if (i >= 11 && can[i - 11]) can[i] = 1;
+    if (i >= 111 && can[i - 111]) can[i] = 1;
+  }
+  int z; cin >> z; 
   while (z--) {
     int n; cin >> n;
-    vector<int> a(n * 2);
-    for (int i = 0; i < n * 2; i++) {
-      cin >> a[i];
+    if (n <= 10000) {
+      if (can[n]) {
+        cout << "YES" << endl;
+      } else {
+        cout << "NO" << endl;
+      }
+    } else {
+      cout << "YES" << endl;
     }
-    sort(a.begin(), a.end());  
-    vector<int> ans;  
-    for (int i = 1; i <= n; i++) {
-      ans.push_back(a[i - 1]);
-      ans.push_back(a[2 * n - i]);
-    }
-    for (auto &it : ans) cout << it << " ";
-    cout << endl;
   }
   return 0;
 }

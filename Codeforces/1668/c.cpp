@@ -1,6 +1,6 @@
 //
-//  a.cpp
-//  2022-04-16 01:22
+//  c.cpp
+//  2022-04-19 23:01
 //
 //  Created by liznb
 //  
@@ -70,25 +70,36 @@ void file() {
 #endif
 }
 
+int solve(int pos, vector<int> &a, int n) {
+  vector<int> res(n + 1, 0);
+  int ans = 0;
+  for (int i = pos + 1; i <= n; i++) {
+    int goal = res[i - 1]; 
+    res[i] = (int) (goal / a[i] + 1) * a[i];
+    ans += goal / a[i] + 1;
+  }
+  for (int i = pos - 1; i >= 1; i--) {
+    int goal = res[i + 1];
+    res[i] = (int) (goal / a[i] + 1) * a[i];
+    ans += goal / a[i] + 1;
+  }
+  return ans;
+}
+
 signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int z; cin >> z;   
-  while (z--) {
-    int n; cin >> n;
-    vector<int> a(n * 2);
-    for (int i = 0; i < n * 2; i++) {
-      cin >> a[i];
-    }
-    sort(a.begin(), a.end());  
-    vector<int> ans;  
-    for (int i = 1; i <= n; i++) {
-      ans.push_back(a[i - 1]);
-      ans.push_back(a[2 * n - i]);
-    }
-    for (auto &it : ans) cout << it << " ";
-    cout << endl;
+  int n; cin >> n;
+  vector<int> a(n + 1);
+  for (int i = 1; i <= n; i++) cin >> a[i];
+  int ans = 1e18;
+  for (int i = 1; i <= n; i++) {
+    int res = solve(i, a, n);
+    assert(res >= 0);
+    ans = min(ans, res);
   }
+  cout << ans;
+   
   return 0;
 }

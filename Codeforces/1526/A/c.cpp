@@ -1,6 +1,6 @@
 //
-//  a.cpp
-//  2022-04-16 01:22
+//  c.cpp
+//  2022-04-19 13:10
 //
 //  Created by liznb
 //  
@@ -74,21 +74,22 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int z; cin >> z;   
-  while (z--) {
-    int n; cin >> n;
-    vector<int> a(n * 2);
-    for (int i = 0; i < n * 2; i++) {
-      cin >> a[i];
+
+  int n; cin >> n;
+  int sum = 0;
+  priority_queue<int> que;
+  int ans = n;
+  for (int i = 1; i <= n; i++) {
+    int val; cin >> val;
+    sum += val;  
+    if (val < 0) que.push(-val);
+    while (sum < 0) {
+      sum += que.top(); 
+      que.pop();
+      ans--;
     }
-    sort(a.begin(), a.end());  
-    vector<int> ans;  
-    for (int i = 1; i <= n; i++) {
-      ans.push_back(a[i - 1]);
-      ans.push_back(a[2 * n - i]);
-    }
-    for (auto &it : ans) cout << it << " ";
-    cout << endl;
   }
+  cout << ans;
+
   return 0;
 }

@@ -1,6 +1,6 @@
 //
 //  a.cpp
-//  2022-04-16 01:22
+//  2022-04-19 22:34
 //
 //  Created by liznb
 //  
@@ -74,21 +74,27 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int z; cin >> z;   
+  int z; cin >> z; 
   while (z--) {
-    int n; cin >> n;
-    vector<int> a(n * 2);
-    for (int i = 0; i < n * 2; i++) {
-      cin >> a[i];
+    int x, y;
+    cin >> x >> y;
+    if (x == 1 && y == 1) {
+      cout << 0 << endl;
+    } else if ((x == 1 && y > 2) || (x > 2 && y == 1)) {
+      cout << -1 << endl;
+    } else {
+      if (x > y) swap(x, y);
+      assert(x <= y); 
+      int ans = (x - 1) * 2;
+      if ((y - x) % 2) {
+        ans += (y - x - 1)  * 2;
+        ans += 1;
+      } else {
+        ans += (y - x) * 2;
+      }
+      cout << ans << endl;
     }
-    sort(a.begin(), a.end());  
-    vector<int> ans;  
-    for (int i = 1; i <= n; i++) {
-      ans.push_back(a[i - 1]);
-      ans.push_back(a[2 * n - i]);
-    }
-    for (auto &it : ans) cout << it << " ";
-    cout << endl;
   }
+   
   return 0;
 }
