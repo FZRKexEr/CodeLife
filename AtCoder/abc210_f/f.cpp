@@ -71,10 +71,17 @@ void file() {
 }
 
 
-// 暴搜 + 随机化
-// 最坏复杂度 O(nm), 随机化后很难被卡（怀疑甚至不能被卡）。
-// 在随机数据下效率非常优秀。
-// 下标从1开始。
+// 标准 2-sat
+// 特性说明：
+// 1. 暴搜 + 随机化
+// 2. 最坏复杂度 O(nm), 随机化后很难被卡（怀疑甚至不能被卡）。
+// 3. 在随机数据下效率非常优秀。
+// 4. 下标从0开始。
+//
+// 2-sat的两种题型：
+// 1. 标准2-sat: 给定了具体的 m (m <= 1e6) 个 xor 或者 or 关系。
+// 2. 前缀优化建边：没有给定 m，只把 n 分成了几个集合，集合内的元素两两互斥(xor), 可以做到集合内线性建边。 
+// 两种问题几乎独立，需要用两种方法解决，不存在统一解法。
 
 struct TwoSAT{
   vector<vector<int>> G;
@@ -82,20 +89,26 @@ struct TwoSAT{
   stack<int> stk;
   int n;
 
-  TwoSAT(int _n) : G(_n * 2 + 2), vis(_n * 2 + 2, 0) { n = _n; }
- 
-  void addor(int a, int at, int b, int bt) {
+  TwoSAT(int _n) : G(_n * 4 + 4), vis(_n * 4 + 4, 0) { n = _n; }
+
+  // 最基本的add, 表示因故关系: 如果 2a + at 为真, 那么 2b + bt 也为真
+  void add(int a, int at, int b, int bt) {
     a += a + at;
     b += b + bt;
-    G[a ^ 1].push_back(b); // !a -> b
-    G[b ^ 1].push_back(a); // !b -> a
+    G[a].push_back(b);
+    G[b].push_back(a);
   }
 
+  // 2a + at 和 2b + bt 之间至少一个为真
+  void addor(int a, int at, int b, int bt) {
+    add(a, at ^ 1, b, bt);
+    add(b, bt ^ 1, a, at);
+  }
+  
+  // 2a + at 和 2b + bt 之间只能一个为真。
   void addxor(int a, int at, int b, int bt) {
-    a += a + at;
-    b += b + bt;
-    G[a].push_back(b ^ 1);
-    G[b].push_back(a ^ 1);
+    add(a, at, b, bt ^ 1);
+    add(b, bt, a, at ^ 1);
   }
 
   bool dfs(int pos) {
@@ -159,23 +172,17 @@ signed main() {
   
   TwoSAT T(n); 
   vector<vector<array<int, 2>>> pos;
+  
   pos.resize(2e6 + 1);
   for (int i = 1; i <= n; i++) {
-    for (int j = 0; j <= 1; j++) {
-      for (auto &it : res[a[i][j]]) {
-        for (auto &jt : pos[it]) {
-          T.addxor(i, j, jt[0], jt[1]); 
-        }
-      }
-    }
     for (int j = 0; j <= 1; j++) {
       for (auto &it : res[a[i][j]]) {
         pos[it].push_back({i, j});
       }
     }
   }
+  T.prefix(pos);
   
-   
   if (T.sol()) cout << "Yes" << endl;
   else cout << "No" << endl;
   return 0;
