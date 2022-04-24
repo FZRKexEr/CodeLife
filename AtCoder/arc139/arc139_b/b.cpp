@@ -1,6 +1,6 @@
 //
-//  e.cpp
-//  2022-04-24 00:23
+//  b.cpp
+//  2022-04-24 21:09
 //
 //  Created by liznb
 //  
@@ -70,41 +70,64 @@ void file() {
 #endif
 }
 
-int ask(int w) {
-  cout << "? " << w << endl; 
-  cout.flush();
-  int val; cin >> val;
-  return val;
-}
-
 signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int n; cin >> n;
-  int l = 1, r = 2000 * 2000; 
-  while (l <= r) {
-    int mid = l + (r - l) / 2;
-    int val = ask(mid);
-    if (val == 1) {
-      r = mid - 1;
+  int z; cin >> z; 
+  while (z--) {
+    int n; cin >> n;
+    int a, b; cin >> a >> b;
+    vector<int> c(3); 
+    for (auto &it : c) cin >> it;
+    if (a > b) swap(a, b), swap(c[1], c[2]);
+    
+    int limit = sqrt(n);
+    if (b >= limit) {
+      int ans = 1000000000000000000ll;
+      for (int i = 0; i * b <= n; i++) {
+        int res = c[2] * i;
+        int re = n - i * b;
+        if (c[1] > c[0] * a) {
+          res += c[0] * re;
+        } else {
+          int cnt = re / a;  
+          res += cnt * c[1] + (re - cnt * a) * c[0];
+        }
+        ans = min(ans, res);
+      }
+      cout << ans << endl;
     } else {
-      l = mid + 1;
+      if (c[0] * a < c[1] && c[0] * b < c[2]) {
+        cout << c[0] * n << endl;
+      } else {
+        if ((c[1] * b) > (c[2] * a)) {
+          swap(a, b);
+          swap(c[1], c[2]);
+        }  
+        int ans = 0;
+        assert(a <= sqrt(1e9));
+        if (n > 1e6) {
+          int cnt = (n - 1e6) / a; 
+          assert(n - a * cnt >= 1e6);
+          while (n - a * cnt > 1e6) cnt++;
+          ans += cnt * c[1]; 
+          n -= a * cnt;
+          assert(n >= 1);
+        }
+        vector<int> f(n + 1, 1000000000000000000ll); 
+        f[0] = 0;
+        for (int i = 1; i <= n; i++) {
+          f[i] = min(f[i - 1] + c[0], f[i]);
+          if (i >= a) f[i] = min(f[i - a] + c[1], f[i]);
+          if (i >= b) f[i] = min(f[i - b] + c[2], f[i]);
+        }
+        // OK
+        ans += f[n];
+        cout << ans << endl;
+      }
     }
   }
-  int w = l;
-  int ans = w;
-  for (int i = 2; i <= n; i++) {
-    int up = floor(w * 1.0 / i);
-    int down = ceil(1.0 * (w - i + 1) / i);
-    assert(down == up);
-    if (ask(down) == i) {
-      ans = min(ans, i * down);
-    }
-  }
-  cout << "! " << ans;
-  cout.flush();
-  
+   
   return 0;
 }
-   

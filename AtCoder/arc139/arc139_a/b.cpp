@@ -1,6 +1,6 @@
 //
-//  e.cpp
-//  2022-04-24 00:23
+//  b.cpp
+//  2022-04-24 21:09
 //
 //  Created by liznb
 //  
@@ -70,41 +70,30 @@ void file() {
 #endif
 }
 
-int ask(int w) {
-  cout << "? " << w << endl; 
-  cout.flush();
-  int val; cin >> val;
-  return val;
-}
-
 signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int n; cin >> n;
-  int l = 1, r = 2000 * 2000; 
-  while (l <= r) {
-    int mid = l + (r - l) / 2;
-    int val = ask(mid);
-    if (val == 1) {
-      r = mid - 1;
-    } else {
-      l = mid + 1;
+  int z; cin >> z; 
+  while (z--) {
+    int n, c[4], v[4];
+    v[1] = 1;
+    cin >> n >> v[2] >> v[3] >> c[1] >> c[2] >> c[3];
+    array<double, 2> arr[3] = {
+      {1.0 * c[1], 1},
+      {1.0 * c[2] / v[2], 2},
+      {1.0 * c[3] / v[3], 3},
+    };
+    sort(arr, arr + 3); 
+    int ans = 0;
+    for (int i = 0; i < 3; i++) {
+      int o = arr[i][1];
+      int cnt = n / v[o];
+      ans += cnt * c[o];
+      n %= v[o];
     }
+    cout << ans << endl;
   }
-  int w = l;
-  int ans = w;
-  for (int i = 2; i <= n; i++) {
-    int up = floor(w * 1.0 / i);
-    int down = ceil(1.0 * (w - i + 1) / i);
-    assert(down == up);
-    if (ask(down) == i) {
-      ans = min(ans, i * down);
-    }
-  }
-  cout << "! " << ans;
-  cout.flush();
-  
+   
   return 0;
 }
-   

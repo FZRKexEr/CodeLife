@@ -1,6 +1,6 @@
 //
-//  e.cpp
-//  2022-04-24 00:23
+//  f2.cpp
+//  2022-04-24 19:37
 //
 //  Created by liznb
 //  
@@ -70,41 +70,11 @@ void file() {
 #endif
 }
 
-int ask(int w) {
-  cout << "? " << w << endl; 
-  cout.flush();
-  int val; cin >> val;
-  return val;
-}
-
 signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int n; cin >> n;
-  int l = 1, r = 2000 * 2000; 
-  while (l <= r) {
-    int mid = l + (r - l) / 2;
-    int val = ask(mid);
-    if (val == 1) {
-      r = mid - 1;
-    } else {
-      l = mid + 1;
-    }
-  }
-  int w = l;
-  int ans = w;
-  for (int i = 2; i <= n; i++) {
-    int up = floor(w * 1.0 / i);
-    int down = ceil(1.0 * (w - i + 1) / i);
-    assert(down == up);
-    if (ask(down) == i) {
-      ans = min(ans, i * down);
-    }
-  }
-  cout << "! " << ans;
-  cout.flush();
   
+   
   return 0;
 }
-   
