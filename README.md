@@ -17,5 +17,7 @@
 
 ### Codeforces
 
+[1671](题解/1671.md)
+
 ### AtCoder
 
