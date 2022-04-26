@@ -1,9 +1,9 @@
 //
-//  a.cpp
-//  2022-04-21 13:56
+//  c.cpp
+//  2022-04-25 19:12
 //
 //  Created by liznb
-//  https://codeforces.com/problemset/problem/1656/E
+//  
 
 #include <bits/stdc++.h>
 #define int long long
@@ -70,46 +70,31 @@ void file() {
 #endif
 }
 
-void solve() {
-  int n; cin >> n;     
-
-  vector<vector<int>> G(n + 1); 
-  vector<int> ans(n + 1);
-  for (int i = 1; i < n; i++) {
-    int u, v; cin >> u >> v;
-    G[u].push_back(v);
-    G[v].push_back(u);
-  }
-  for (int i = 1; i <= n; i++) {
-    ans[i] = G[i].size();
-  }
-  queue<int> que; que.push(1);
-  vector<int> vis(n + 1, 0);
-  vis[1] = 1;
-  while (!que.empty()) {
-    int x = que.front(); que.pop(); 
-    for (auto &v : G[x]) {
-      if (vis[v]) continue;
-      vis[v] = 1;
-      if (ans[x] > 0) ans[v] *= -1;
-      que.push(v);
-    }
-  }
-  for (int i = 1; i <= n; i++) {
-    cout << ans[i] << " ";
-  }
-  cout << endl;
-  return;
-}
-
 signed main() {
-  file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int z; cin >> z;
-  while (z--) {
-    solve();
-    
+  vector<array<int, 2>> p(3); 
+  vector<int> h, r;
+  for (int i = 0; i < 3; i++) {
+    cin >> p[i][0] >> p[i][1];
+    h.push_back(p[i][0]);
+    r.push_back(p[i][1]);
   }
+  sort(h.begin(), h.end());
+  sort(r.begin(), r.end());
+  int x = h[1], y = r[1]; 
+  vector<array<int, 4>> ans;
+  for (int i = 0; i < 3; i++) {
+    ans.push_back({x, y, p[i][0], y}); 
+    ans.push_back({p[i][0], y, p[i][0], p[i][1]});
+  }
+  cout << ans.size() << endl;
+  for (auto &it : ans) {
+    for (int j = 0; j < 4; j++) {
+      cout << it[j] << " ";
+    }
+    cout << endl;
+  }
+
   return 0;
 }

@@ -1,9 +1,9 @@
 //
-//  a.cpp
-//  2022-04-21 13:56
+//  l.cpp
+//  2022-04-25 20:12
 //
 //  Created by liznb
-//  https://codeforces.com/problemset/problem/1656/E
+//  
 
 #include <bits/stdc++.h>
 #define int long long
@@ -70,46 +70,78 @@ void file() {
 #endif
 }
 
-void solve() {
-  int n; cin >> n;     
-
-  vector<vector<int>> G(n + 1); 
-  vector<int> ans(n + 1);
-  for (int i = 1; i < n; i++) {
-    int u, v; cin >> u >> v;
-    G[u].push_back(v);
-    G[v].push_back(u);
-  }
-  for (int i = 1; i <= n; i++) {
-    ans[i] = G[i].size();
-  }
-  queue<int> que; que.push(1);
-  vector<int> vis(n + 1, 0);
-  vis[1] = 1;
-  while (!que.empty()) {
-    int x = que.front(); que.pop(); 
-    for (auto &v : G[x]) {
-      if (vis[v]) continue;
-      vis[v] = 1;
-      if (ans[x] > 0) ans[v] *= -1;
-      que.push(v);
-    }
-  }
-  for (int i = 1; i <= n; i++) {
-    cout << ans[i] << " ";
-  }
-  cout << endl;
-  return;
-}
-
 signed main() {
   file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  int z; cin >> z;
-  while (z--) {
-    solve();
-    
+  int n, m, s; cin >> n >> m >> s;
+  vector<vector<int>> G(n + 1);
+  for (int i = 1; i <= m; i++) {
+    int u, v; cin >> u >> v; 
+    G[u].push_back(v);
   }
+  vector<int> pre(n + 1, 0), vis(n + 1, 0), belong(n + 1);
+
+  function<void(int)> dfs = [&] (int pos) {
+    assert(belong[belong[pos]] == belong[pos]);
+    for (auto &v : G[pos]) {
+      if (vis[v]) continue;
+      vis[v] = 1;
+      pre[v] = pos;
+      belong[v] = belong[pos];
+      dfs(v);
+    }
+  };
+
+  belong[s] = s;
+  pre[s] = 0;
+  vector<int> root(n + 1, 0);
+  vis[s] = 1;
+  for (auto &v : G[s]) {
+    if (vis[v]) continue;
+    root[v] = 1;
+    vis[v] = 1;
+    belong[v] = v;
+    pre[v] = s;
+    dfs(v);
+  }
+  
+  for (int i = 1; i <= n; i++) {
+    if (vis[i] == 0) continue;
+    for (auto &v : G[i]) {
+      if (vis[v] == 0) continue;
+      if (v == s) continue;
+      if (root[v] == 1 && i == s) {
+        continue;
+      }
+      if (belong[v] != belong[i]) {
+        cout << "Possible" << endl;
+        vector<int> ans1, ans2;
+        int p = v;
+        while (p != 0) {
+          ans1.push_back(p);
+          p = pre[p];
+        }
+        reverse(ans1.begin(), ans1.end());
+        ans2.push_back(v);
+        p = i;
+        while (p != 0) {
+          ans2.push_back(p);
+          p = pre[p];
+        }
+        reverse(ans2.begin(), ans2.end());
+
+        cout << ans1.size() << endl;
+        for (auto &it : ans1) cout << it << " ";
+        cout << endl;
+        cout << ans2.size() << endl;
+        for (auto &it : ans2) cout << it << " ";
+        cout << endl;
+
+        return 0;
+      }
+    }
+  }
+  cout << "Impossible" << endl;
   return 0;
 }
