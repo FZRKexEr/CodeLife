@@ -66,12 +66,12 @@ int power(int a, int b) {
 void file() {
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
-  // freopen("out.txt", "w", stdout);
+//  freopen("out.txt", "w", stdout);
 #endif
 }
 
 signed main() {
-  //file();
+  file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
   int z; cin >> z; 
@@ -80,52 +80,31 @@ signed main() {
     int a, b; cin >> a >> b;
     vector<int> c(3); 
     for (auto &it : c) cin >> it;
-    if (a > b) swap(a, b), swap(c[1], c[2]);
-    
+    if (a * c[2] <= c[1] * b) {
+      swap(a, b);
+      swap(c[1], c[2]);
+    }
+    auto greed = [&] (int x, int a, int y, int n) {
+      if (x * a <= y) {
+        return n * x;
+      }
+      return n / a * y + (n - n / a * a) * x;
+    };
     int limit = sqrt(n);
-    if (b >= limit) {
-      int ans = 1000000000000000000ll;
-      for (int i = 0; i * b <= n; i++) {
-        int res = c[2] * i;
-        int re = n - i * b;
-        if (c[1] > c[0] * a) {
-          res += c[0] * re;
-        } else {
-          int cnt = re / a;  
-          res += cnt * c[1] + (re - cnt * a) * c[0];
-        }
-        ans = min(ans, res);
+    if (a >= limit) {
+      int ans = 1e18;
+      for (int i = 0; i * a <= n; i++) {
+        int res = i * c[1]; 
+        ans = min(ans, res + greed(c[0], b, c[2], n - i * a)); 
       }
       cout << ans << endl;
     } else {
-      if (c[0] * a < c[1] && c[0] * b < c[2]) {
-        cout << c[0] * n << endl;
-      } else {
-        if ((c[1] * b) > (c[2] * a)) {
-          swap(a, b);
-          swap(c[1], c[2]);
-        }  
-        int ans = 0;
-        assert(a <= sqrt(1e9));
-        if (n > 1e6) {
-          int cnt = (n - 1e6) / a; 
-          assert(n - a * cnt >= 1e6);
-          while (n - a * cnt > 1e6) cnt++;
-          ans += cnt * c[1]; 
-          n -= a * cnt;
-          assert(n >= 1);
-        }
-        vector<int> f(n + 1, 1000000000000000000ll); 
-        f[0] = 0;
-        for (int i = 1; i <= n; i++) {
-          f[i] = min(f[i - 1] + c[0], f[i]);
-          if (i >= a) f[i] = min(f[i - a] + c[1], f[i]);
-          if (i >= b) f[i] = min(f[i - b] + c[2], f[i]);
-        }
-        // OK
-        ans += f[n];
-        cout << ans << endl;
+      int ans = 1e18;
+      for (int i = 0; i < a && i * b <= n; i++) {
+        int res = i * c[2];
+        ans = min(ans, res + greed(c[0], a, c[1], n - i * b));
       }
+      cout << ans << endl;
     }
   }
    
