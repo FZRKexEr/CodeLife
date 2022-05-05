@@ -47,7 +47,7 @@ void debug_out(vector<string> args, int idx, int LINE_NUM, Head H, Tail... T) {
 #define debug(...) 2022
 #endif
 
-random_device rd; // 使用硬件熵源的随机数生成器
+random_device rd; 
 mt19937 seed(rd());
 uniform_int_distribution<long long> U(1, 1000000000ll); // 1 - 1e9
 
