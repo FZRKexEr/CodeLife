@@ -108,13 +108,7 @@ signed main() {
   ios::sync_with_stdio(false); 
   cin.tie(0);
 
-  for (int i = 1; i <= 100000; i++) {
-    cout << i << " ";
-    cout << max_gray(i) << endl;
-  }
-
-  return 0;
-  int z = 0;
+  int z = 0; cin >> z;
   while (z--) {
     int a, b; cin >> a >> b;
     int max_a = max_gray(a);

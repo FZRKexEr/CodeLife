@@ -1,6 +1,6 @@
 //
-//  a.cpp
-//  2022-05-05 18:40
+//  b.cpp
+//  2022-05-06 22:52
 //
 //  Created by liznb
 //  
@@ -74,7 +74,45 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
+  int z; cin >> z; 
+  while (z--) {
+    int n; cin >> n;
+    string s; cin >> s;
+    int k; cin >> k;
+    vector<int> has(300, 0); 
+    for (int i = 1; i <= k; i++) {
+      char c; cin >> c;
+      has[c] = 1;
+    }
+    vector<int> a(n, 0), pos;
+    for (int i = 0; i < n; i++) {
+      a[i] = has[s[i]];
+      if (a[i]) pos.push_back(i);
+    }
+    if (pos.size() == 0) {
+      cout << 0 << endl;
+      continue;
+    }
+    int l = 0, r = n;
+    while (l <= r) {
+      int mid = (l + r) / 2;
+      int all = 0, tot = -1;
+      for (int i = 0; i < n; i++) {
+        if (a[i] == 0) {
+          all++;
+          continue;
+        }
+        tot++;
+        if (tot == (int) pos.size() - 1) break;
+        int life = min(pos[tot + 1] - pos[tot], mid);
+        all = max(0ll, all - life);
+        all++;
+      }
+      if (all > mid) l = mid + 1;
+      else r = mid - 1;
+    }
+    cout << l << endl;
+  }
    
   return 0;
 }

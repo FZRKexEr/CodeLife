@@ -1,6 +1,6 @@
 //
 //  a.cpp
-//  2022-05-05 18:40
+//  2022-05-06 22:35
 //
 //  Created by liznb
 //  
@@ -75,6 +75,27 @@ signed main() {
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-   
+  int z; cin >> z; 
+  while (z--) {
+    int n; cin >> n;
+    vector<int> a(n + 1);
+    int cnt = 0;
+    for (int i = 1; i <= n; i++) {
+      cin >> a[i];
+      if (a[i] < 0) cnt++;
+    }
+    for (int i = 1; i <= cnt; i++) {
+      a[i] = -abs(a[i]);
+    }
+    for (int i = cnt + 1; i <= n; i++) {
+      a[i] = abs(a[i]);
+    }
+    int flag = true;
+    for (int i = 2; i <= n; i++) {
+      if (a[i] < a[i - 1]) flag = false;
+    }
+    if (flag) cout << "yes" << endl;
+    else cout << "no" << endl;
+  }
   return 0;
 }

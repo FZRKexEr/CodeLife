@@ -1,6 +1,6 @@
 //
-//  a.cpp
-//  2022-05-05 18:40
+//  c.cpp
+//  2022-05-06 23:12
 //
 //  Created by liznb
 //  
@@ -70,11 +70,65 @@ void file() {
 #endif
 }
 
+
+struct DSU {
+  vector<int> f, dep;   
+  DSU(int n) : f(n + 1), dep(n + 1, 0) { iota(f.begin(), f.end(), 0); }
+
+  inline int find(int x) {
+    while (x != f[x]) x = f[x] = f[f[x]];
+    return x;
+  }
+
+  inline bool merge(int x, int y) {
+    x = find(x), y = find(y); 
+
+    if (x == y) return false;
+    if (dep[x] > dep[y]) swap(x, y);
+    if (dep[x] == dep[y]) dep[y]++;
+
+    f[x] = y;    
+    return true;
+  }
+};
+
 signed main() {
-  //file();
+  file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-   
+  int z; cin >> z; 
+  while (z--) {
+    int n; cin >> n;
+    vector<int> a(n), b(n), c(n); 
+    DSU T(n);
+    for (auto &it : a) cin >> it;
+    for (auto &it : b) cin >> it;
+    for (auto &it : c) cin >> it;
+    
+    for (int i = 0; i < n; i++) {
+      T.merge(a[i], b[i]);
+    }
+    vector<int> ok(n + 1, 1), sz(n + 1, 0);
+    for (int i = 0; i < n; i++) {
+      if (c[i] == 0) continue;  
+      int fa = T.find(c[i]);
+      ok[fa] = 0;
+    }
+    for (int i = 1; i <= n; i++) {
+      int fa = T.find(i);
+      sz[fa]++;
+    }
+    
+    int ans = 1ll;
+    for (int i = 1; i <= n; i++) {
+      int fa = T.find(i);
+      if (ok[fa] && sz[fa] > 1) {
+        ans = ans * 2 % MOD;
+        ok[fa] = 0;
+      }
+    }
+    cout << ans << endl;
+  }
   return 0;
 }

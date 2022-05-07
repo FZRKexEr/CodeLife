@@ -1,6 +1,6 @@
 //
-//  a.cpp
-//  2022-05-05 18:40
+//  e.cpp
+//  2022-05-05 23:41
 //
 //  Created by liznb
 //  
@@ -71,10 +71,39 @@ void file() {
 }
 
 signed main() {
-  //file();
+  file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
+  int z; cin >> z; 
+  while (z--) {
+    int n, m; 
+    cin >> n >> m;
+    string s; cin >> s;
+    int used = 0;
+    int flag = false;
+    for (int i = 0; i < n; i++) {
+      if (s[i] - 'a' <= m) {
+        used = max(used, (int) (s[i] - 'a'));
+        continue;
+      }
+      flag = true;
+      m -= used;  
+      for (int j = 0; j < n; j++) {
+        if (s[j] <= used + 'a') cout << "a"; 
+        else {
+          if (s[j] >= s[i] - m && s[j] <= s[i]) cout << (char) (s[i] - m);
+          else cout << s[j];
+        }
+      }
+      cout << endl;
+      break;
+    }
+    if (!flag) {
+      for (int i = 1; i <= n; i++) cout << "a";
+      cout << endl;
+    }
+    
+  }
    
   return 0;
 }

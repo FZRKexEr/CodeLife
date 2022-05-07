@@ -1,6 +1,6 @@
 //
 //  a.cpp
-//  2022-05-05 18:40
+//  2022-05-05 23:36
 //
 //  Created by liznb
 //  
@@ -74,7 +74,16 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
+  int z; cin >> z; 
+  while (z--) {
+    int a, b, c, x, y; 
+    cin >> a >> b >> c >> x >> y;
+    x -= a, y -= b;
+    if (x > 0) c -= x;
+    if (y > 0) c -= y;
+    if (c >= 0) cout << "YES" << endl;
+    else cout << "NO" << endl;
+  }
    
   return 0;
 }

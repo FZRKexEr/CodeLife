@@ -1,6 +1,6 @@
 //
-//  a.cpp
-//  2022-05-05 18:40
+//  e.cpp
+//  2022-05-07 00:13
 //
 //  Created by liznb
 //  
@@ -74,7 +74,50 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
+  int z; cin >> z;  
+  while (z--) {
+    int p; cin >> p;
+    int n = (1ll << p);
+    vector<vector<int>> G(n + 1);
+    vector<array<int, 2>> edges(n);
+    for (int i = 1; i <= n - 1; i++) {
+      int u, v; cin >> u >> v;
+      G[u].push_back(v);
+      G[v].push_back(u);
+      edges[i] = {u, v};
+    }
+    vector<int> ans(n + 1, 0); ans[1] = n;
+    map<int, map<int, int>> ans_edge;
+    int tot = 0;
+    function<void(int, int)> dfs = [&] (int pos, int fa) {
+      for (auto &v: G[pos]) {
+        if (v == fa) continue;
+        if (ans[pos] >= n) {
+          tot++;
+          ans_edge[pos][v] = tot + n;
+          ans_edge[v][pos] = tot + n;
+          ans[v] = tot;
+        } else {
+          tot++;
+          ans_edge[pos][v] = tot;
+          ans_edge[v][pos] = tot;
+          ans[v] = n + tot;
+        }
+        dfs(v, pos);
+      }
+    };
+    dfs(1, -1);
+    cout << 1 << endl;
+    for (int i = 1; i <= n; i++) {
+      cout << ans[i] << " ";
+    }
+    cout << endl;
+    for (int i = 1; i <= n - 1; i++) {
+      cout << ans_edge[edges[i][0]][edges[i][1]] << " ";
+    }
+    cout << endl;
+
+  }
    
   return 0;
 }

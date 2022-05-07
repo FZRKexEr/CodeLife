@@ -1,6 +1,6 @@
 //
-//  a.cpp
-//  2022-05-05 18:40
+//  d.cpp
+//  2022-05-06 23:42
 //
 //  Created by liznb
 //  
@@ -74,7 +74,28 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
+  int limit = 100000;
+  vector<int> f(limit + 1, 0);
+  array<int, 3> cnt = {0, 0, 0};
+  vector<int> val(limit + 1, 0);
+  for (int i = 1; i <= limit; i++) {
+    for (int j = 0; j < 3; j++) {
+      if (j == i % 3) {
+        cnt[j]++;
+        continue;
+      }
+      f[i] += cnt[j] * 2;  
+    }
+    val[i] = val[i - 1] + f[i];
+  }
   
+  int z; cin >> z;
+
+  while (z--) {
+    int n; cin >> n;
+    int ans = lower_bound(val.begin(), val.end(), n) - val.begin();   
+    cout << ans << endl;
+  }
    
   return 0;
 }
