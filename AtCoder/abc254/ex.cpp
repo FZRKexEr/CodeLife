@@ -257,10 +257,89 @@ void file() {
 #endif
 }
 
+/*
+ * 常用功能:
+ * 1. 插入一个零一字符串
+ * 2. 删除一个零一字符串
+ * 3. 对于零一字符串可重复集合 S，和零一字符串 x, 询问 S 中与 x 异或结果大于(等于) r 的字符串的个数。
+ * 4. 零一Trie DP
+ * 5. 和异或相关的题大概率可以使用。
+ *
+ * 本模板特性:
+ * 1. 需要修改二进制位数上限，默认31。表示可以处理 [0, 2^B - 1] 的数
+ * 2. 因为 cf 栈空间等于memory limit, 所以可以直接在 main 声明 Trie, 不用反复 init
+ */
+
+struct Trie {
+
+  vector<array<int, 2>> ch;
+  vector<array<int, 2>> belong; 
+
+  Trie(int n) { // 这里必须传入 n 是为了避免忘记初始化
+    ch.push_back({0, 0});    
+    belong.push_back({0, 0});
+  }
+
+  void insert(int x, int o) {
+    if (x == 0) {
+      belong[0][o]++;
+      return;
+    }
+    int p = 0, B = 31;
+    while (!(x >> B & 1) && B) B--;
+    for (int i = B; i >= 0; i--) {
+      int c = (x >> i) & 1;
+      if (!ch[p][c]) {
+        ch.push_back({0, 0});
+        belong.push_back({0, 0});
+        ch[p][c] = (int) ch.size() - 1;
+      }
+      p = ch[p][c];
+    }
+    belong[p][o]++;
+  }
+    
+  array<int, 3> solve(int pos, int o) {
+    auto calc = [&] (auto &x) {
+      int val = min(x[0], x[1]);
+      x[0] -= val;
+      x[1] -= val;
+    };
+    array<int, 3> ans = {belong[pos][0], belong[pos][1], 0};
+    calc(ans); 
+    for (int i = 0; i < 2; i++) {
+      if (!ch[pos][i]) continue;
+      auto res = solve(ch[pos][i], i);  
+      if (res[2] == -1) return {0, 0, -1};
+      ans[2] += res[2] + res[0] + res[1]; 
+      ans[0] += res[0];
+      ans[1] += res[1];
+      calc(ans); 
+    }
+    if (ans[0] && o == 1) ans[2] = -1;
+    return ans;
+  }
+};
+
 signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-   
+  int n; cin >> n;   
+  vector<int> a(n + 1), b(n + 1);
+
+  Trie T(n);
+
+  for (int i = 1; i <= n; i++) {
+    cin >> a[i];
+    T.insert(a[i], 1); 
+  }
+  for (int i = 1; i <= n; i++) {
+    cin >> b[i];
+    T.insert(b[i], 0);
+  }
+  auto res = T.solve(0, 1); 
+  if (res[2] != -1 && res[0] == 0 && res[1] == 0) cout << res[2];
+  else cout << -1;
   return 0;
 }
