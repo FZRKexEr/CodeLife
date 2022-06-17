@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  b.cpp
+//  2022-06-16 19:47
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -270,7 +270,43 @@ signed main() {
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-  %HERE% 
+  int z; cin >> z; 
+  while (z--) {
+    int A, B, n;
+    cin >> A >> B >> n;
+    vector<int> a(n + 1), b(n + 1);
+    for (int i = 1; i <= n; i++) {
+      cin >> a[i];  
+    }
+    for (int i = 1; i <= n; i++) {
+      cin >> b[i];
+    }
+    int all = 0;
+    for (int i = 1; i <= n; i++) {
+      int cnt;
+      if (b[i] % A == 0) cnt = b[i] / A;
+      else {
+        cnt = b[i] / A + 1;
+      }
+      all += a[i] * cnt;
+    }
+    int flag;
+    if (B >= all) flag = true;
+    else flag = false;
+    
+    for (int i = 1; i <= n; i++) {
+      int cnt;
+      if (b[i] % A == 0) cnt = b[i] / A;
+      else {
+        cnt = b[i] / A + 1;
+      }
+      assert(cnt);
+      int val = B - (all - cnt * a[i]) - (cnt - 1) * a[i]; 
+      if (val > 0) flag = true; 
+    }
+    if (flag) cout << "YES" << endl;
+    else cout << "NO" << endl;
+  }
 
   Timer();
   return 0;

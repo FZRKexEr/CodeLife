@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  c.cpp
+//  2022-06-16 17:46
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -266,11 +266,57 @@ void Timer() {
 }
 
 signed main() {
-  //file();
+  file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-  %HERE% 
+  int z; cin >> z; 
+  while (z--) {
+    int n; cin >> n;
+    vector<vector<int>> U(n + 1);
+    vector<int> s(n + 1);
+    for (int i = 1; i <= n; i++) {
+      int u; cin >> u;  
+      U[u].push_back(i);
+    }
+    for (int i = 1; i <= n; i++) {
+      cin >> s[i];  
+    }
+    for (int i = 1; i <= n; i++) {
+      sort(U[i].begin(), U[i].end(), [&] (auto i, auto j) { return s[i] > s[j]; });
+      if (U[i].empty()) continue;
+      U[i][0] = s[U[i][0]];
+      for (int j = 1; j < (int) U[i].size(); j++) {
+        U[i][j] = U[i][j - 1] + s[U[i][j]];
+      }
+    }
+    vector<int> ans(n + 1, 0);
+    for (int i = 1; i <= n; i++) {
+      int sz = U[i].size();  
+      if (U[i].size() == 0) continue;
+      for (int j = 1; j <= sz; j++) {
+        int upper = sqrt(j);
+        for (int k = 1; k <= upper; k++) {
+          if (j % k == 0) {
+            int a = k, b = j / k;
+            if (a != b) {
+              if (sz - sz % a == j)
+                ans[a] += U[i][j - 1];
+              if (sz - sz % b == j)
+                ans[b] += U[i][j - 1];
+            } else {
+              if (sz - sz % a == j)
+                ans[a] += U[i][j - 1];
+            }
+          }
+        }
+      }
+    }
+    for (int i = 1; i <= n; i++) {
+      cout << ans[i] << " ";
+    }
+    cout << endl;
+  }
 
   Timer();
   return 0;

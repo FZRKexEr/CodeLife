@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  e.cpp
+//  2022-06-16 23:45
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -270,7 +270,36 @@ signed main() {
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-  %HERE% 
+  int n, m; cin >> n >> m;    
+  vector<vector<int>> G(n + 1);
+
+  vector<int> deg(n + 1, 0);
+  for (int i = 1; i <= m; i++) {
+    int u, v; cin >> u >> v;  
+    G[v].push_back(u);
+    deg[u]++;
+  }
+
+  vector<int> d(n + 1, 0x3f3f3f3f);
+  d[n] = 0; 
+
+  set<array<int, 2>> dis;  
+  for (int i = 1; i <= n; i++) dis.insert({d[i], i});
+
+  while (!dis.empty()) {
+    int u = (*dis.begin())[1];
+    dis.erase(dis.begin());
+    for (auto &v : G[u]) {
+      --deg[v];  
+      int disv = d[u] + deg[v] + 1;
+      if (disv < d[v]) {
+        dis.erase({d[v], v});
+        d[v] = disv; 
+        dis.insert({d[v], v});
+      }
+    }
+  }
+  cout << d[1];
 
   Timer();
   return 0;

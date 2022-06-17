@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  d.cpp
+//  2022-06-16 18:21
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -266,11 +266,49 @@ void Timer() {
 }
 
 signed main() {
-  //file();
+  file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-  %HERE% 
+  int n; cin >> n;
+  vector<int> a(n + 1), b(n + 1);
+  for (int i = 1; i <= n; i++) {
+    cin >> a[i]; 
+  }
+  for (int i = 1; i <= n; i++) {
+    cin >> b[i];
+  }
+  int res = 0;
+  for (int i = 1; i <= n; i++) {
+    res += a[i] * b[i];
+  }
+  int ans = res; 
+  for (int i = 1; i <= n; i++) {
+    int backup = res;
+    for (int j = 1; j <= n; j++) {
+      if (i + j > n || i - j < 1) break;
+      res -= a[i + j] * b[i + j];       
+      res -= a[i - j] * b[i - j];
+      res += a[i - j] * b[i + j]; 
+      res += a[i + j] * b[i - j];
+      ans = max(ans, res);
+    }
+    res = backup;
+  }
+  for (int i = 1; i <= n; i++) {
+    int backup = res;
+    for (int j = 1; j <= n; j++) {
+      int l = i - j + 1, r = i + j;
+      if (l < 1 || r > n) break;
+      res -= a[l] * b[l];
+      res -= a[r] * b[r];
+      res += a[l] * b[r];
+      res += a[r] * b[l];
+      ans = max(ans, res);
+    }
+    res = backup;
+  }
+  cout << ans;
 
   Timer();
   return 0;

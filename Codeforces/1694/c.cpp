@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  c.cpp
+//  2022-06-16 22:47
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -270,7 +270,33 @@ signed main() {
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-  %HERE% 
+  int z; cin >> z; 
+  while (z--) {
+    auto solve = [&]() {
+      int n; cin >> n;
+      vector<int> a(n + 1);
+      int sum = 0;
+      for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+        sum += a[i]; 
+      }
+      if (sum) return 0;
+      sum = 0;
+      for (int i = n; i >= 1; i--) {
+        if (a[i] > 0) {
+          if (a[i] > sum) return 0;
+          sum -= a[i];
+          if (i != 1 && sum <= 0) return 0;
+        } else {
+          sum += -a[i];
+        }
+      }
+      if (sum != 0) return 0;
+      return 1;
+    };
+    if (!solve()) cout << "No" << endl;
+    else cout << "Yes" << endl;
+  }
 
   Timer();
   return 0;

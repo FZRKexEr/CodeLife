@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  a.cpp
+//  2022-06-12 21:51
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -269,8 +269,23 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
-  %HERE% 
+  int z; cin >> z;  
+  while (z--) {
+    int n, m; cin >> n >> m;
+    vector<int> a(n + 1); 
+    for (int i = 1; i <= n; i++) {
+      cin >> a[i];
+    }
+    int ans = 0, has = m;
+    for (int i = 0; i <= n - 1; i++) {
+      if (has < a[i + 1]) {
+        ans += a[i + 1] - has;
+        has = a[i + 1];
+      }
+      has -= a[i + 1];
+    }
+    cout << ans << endl;
+  }
 
   Timer();
   return 0;

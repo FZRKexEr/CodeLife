@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  b.cpp
+//  2022-06-16 17:22
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -269,8 +269,13 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
-  %HERE% 
+
+  int z; cin >> z; 
+  while (z--) {
+    int n, m, k; cin >> n >> m >> k;
+    if (n * m - 1 == k) cout << "YES" << endl;
+    else cout << "NO" << endl;
+  }
 
   Timer();
   return 0;

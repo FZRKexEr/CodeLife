@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  d.cpp
+//  2022-06-16 20:32
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -270,8 +270,45 @@ signed main() {
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-  %HERE% 
-
+    int n; cin >> n;
+    vector<int> a(n + 1);
+    for (int i = 1; i <= n; i++) {
+      cin >> a[i];
+    }
+    int ans = 0, last0 = -1, last1 = -1;
+    vector<queue<int>> pos(n + 1);
+    for (int i = 1; i <= n; i++) {
+      pos[a[i]].push(i);
+    }
+    for (int i = 1; i <= n; i++) {
+      if (last0 == last1) {
+        if (a[i] != last0) {
+          ans++;
+          last0 = a[i];
+        }
+      } else {
+        if (a[i] == last0) {
+          ans++;
+          last1 = a[i];
+        }
+        else if (a[i] == last1) {
+          ans++;
+          last0 = a[i];
+        } else {
+          int pos0 = (last0 == -1 ? 0x3f3f3f3f : pos[last0].front()); 
+          int pos1 = (last1 == -1 ? 0x3f3f3f3f : pos[last1].front());
+          if (pos0 < pos1) {
+            ans++;
+            last0 = a[i];
+          } else {
+            ans++;
+            last1 = a[i];
+          }
+        }
+      }
+      pos[a[i]].pop(); 
+    }
+    cout << ans << endl;
   Timer();
   return 0;
 }

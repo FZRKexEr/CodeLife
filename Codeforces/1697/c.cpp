@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  c.cpp
+//  2022-06-14 01:19
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -270,7 +270,7 @@ signed main() {
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-  %HERE% 
+  for (int i = 1; i <= 10; i++) cout << rng() << endl;
 
   Timer();
   return 0;

@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  井字棋.cpp
+//  2022-06-10 10:42
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -253,11 +253,12 @@ int power(int a, int b) {
 int START_TIME = -1;
 void file() {
 #ifndef ONLINE_JUDGE
-  START_TIME = clock();
   freopen("in.txt", "r", stdin);
   // freopen("out.txt", "w", stdout);
+  START_TIME = clock(); 
 #endif
 }
+
 void Timer() {
 #ifndef ONLINE_JUDGE
   if (START_TIME != -1)
@@ -265,13 +266,106 @@ void Timer() {
 #endif
 }
 
+int cnt = 0;
+struct Board {
+  vector<vector<int>> board;  
+  int number;
+  
+  Board() {
+    number = 0;
+    board.resize(3, vector<int> (3, -1));
+  }
+
+  int evaluate() {
+    assert(number == 9);
+    auto rotate = [&] () {
+      auto temp = board;
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          cnt++;
+          board[i][j] = temp[j][3 - i - 1];  
+        }
+      }
+    };
+    auto check_line = [&] () {
+      int val = 0;
+      for (int i = 0; i < 3; i++) {
+        int cnt_0 = 0, cnt_1 = 0;
+        for (int j = 0; j < 3; j++) {
+          cnt++;
+          if (board[i][j] == 0) cnt_0++; 
+          if (board[i][j] == 1) cnt_1++; 
+        }
+        if (cnt_0 == 3) val += 1; // guapi
+        if (cnt_1 == 3) val -= 1; // name
+      }
+      return val;
+    };
+    auto check_diagonal = [&] () {
+      int cnt_0 = 0, cnt_1 = 0;
+      for (int i = 0; i < 3; i++) {
+        cnt++;
+        if (board[i][i] == 0) cnt_0++;
+        if (board[i][i] == 1) cnt_1++;
+      }
+      if (cnt_0 == 3) return 1;
+      if (cnt_1 == 3) return -1;
+      return 0;
+    };
+    int ans = 0;
+    ans += check_line();
+    ans += check_diagonal();
+    rotate();
+    ans += check_line();
+    ans += check_diagonal();
+    rotate(), rotate(), rotate();
+    return ans;
+  }
+};
+
 signed main() {
-  //file();
+ // file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
-  %HERE% 
 
+  int z; cin >> z;
+
+  map<vector<vector<int>>, int> vis[2], value[2];
+  while (z--) {
+    int o; cin >> o; o ^= 1;
+    Board T;
+    for (int i = 0; i < 3; i++) {
+      string s; cin >> s;
+      for (int j = 0; j < 3; j++) {
+        if (s[j] == '.') T.board[i][j] = -1;
+        if (s[j] == 'O') T.board[i][j] = 0, T.number++;
+        if (s[j] == 'X') T.board[i][j] = 1, T.number++;
+      }
+    }
+    // 0 guapi, 1 name
+    function<int(Board&, int)> dfs = [&] (Board &sta, int o) {
+      if (vis[o][sta.board]) return value[o][sta.board];
+      vis[o][sta.board] = 1;
+      if (sta.number == 9) return value[o][sta.board] = sta.evaluate();
+      array<int, 3> goal = {o ? 0x3f3f3f3f : -0x3f3f3f3f, 0, 0};
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+          cnt++;
+          if (sta.board[i][j] == -1) {
+            sta.board[i][j] = o;
+            sta.number++;
+            if (o == 0) goal = max(goal, (array<int, 3>) {dfs(sta, o ^ 1), i, j});
+            if (o == 1) goal = min(goal, (array<int, 3>) {dfs(sta, o ^ 1), i, j});
+            sta.board[i][j] = -1;
+            sta.number--;
+          }
+        }
+      }
+      return value[o][sta.board] = goal[0];
+    };
+    cout << dfs(T, o) << endl;
+  }
+  
   Timer();
   return 0;
 }

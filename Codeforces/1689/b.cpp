@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  b.cpp
+//  2022-06-11 22:17
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -250,18 +250,10 @@ int power(int a, int b) {
   return ans;
 }
 
-int START_TIME = -1;
 void file() {
 #ifndef ONLINE_JUDGE
-  START_TIME = clock();
   freopen("in.txt", "r", stdin);
   // freopen("out.txt", "w", stdout);
-#endif
-}
-void Timer() {
-#ifndef ONLINE_JUDGE
-  if (START_TIME != -1)
-    cout << endl << 1.0 * (clock() - START_TIME) / CLOCKS_PER_SEC << "s";
 #endif
 }
 
@@ -269,9 +261,31 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
-  %HERE% 
-
-  Timer();
+  int z; cin >> z;  
+  while (z--) {
+    int n; cin >> n;
+    vector<int> a(n + 1);
+    for (int i = 1; i <= n; i++) {
+      cin >> a[i];  
+    }
+    if (n == 1) cout << -1 << endl;
+    else {
+      vector<int> used(n + 1, 1);
+      vector<int> ans(n + 1, a[n]);
+      for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+          if (used[j] == 1 && a[i] != j) {
+            ans[i] = j; 
+            used[j]--;
+            break;
+          }
+        }
+      }
+      if (ans[n] == a[n]) swap(ans[n], ans[n - 1]); 
+      for (int i = 1; i <= n; i++) cout << ans[i] << " ";
+      cout << endl;
+    }
+  }
+   
   return 0;
 }

@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  d.cpp
+//  2022-06-16 23:15
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -270,7 +270,36 @@ signed main() {
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-  %HERE% 
+  int z; cin >> z; 
+  while (z--) {
+    int n; cin >> n;
+    vector<vector<int>> G(n + 1);
+    for (int i = 2; i <= n; i++) {
+      int p; cin >> p;
+      G[p].push_back(i);
+      G[i].push_back(p);
+    }
+    vector<int> l(n + 1), r(n + 1);
+    for (int i = 1; i <= n; i++) {
+      cin >> l[i] >> r[i];
+    }
+
+    int ans = 0;
+    function<int(int, int)> dfs = [&](int pos, int fa) {
+      int all = 0;
+      for (auto &v : G[pos]) {
+        if (v == fa) continue;
+        all += dfs(v, pos);
+      }
+      if (all < l[pos]) {
+        all = r[pos];   
+        ans++;
+      }
+      return min(all, r[pos]);
+    };
+    dfs(1, -1);
+    cout << ans << endl;
+  }
 
   Timer();
   return 0;

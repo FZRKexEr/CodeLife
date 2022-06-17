@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  b.cpp
+//  2022-06-12 22:42
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -270,7 +270,22 @@ signed main() {
   ios::sync_with_stdio(false); 
   cin.tie(0);
   
-  %HERE% 
+    int n, q; cin >> n >> q;
+    vector<int> a(n + 1);
+    for (int i = 1; i <= n; i++) {
+      cin >> a[i];
+    }
+    sort(a.begin() + 1, a.end());
+    vector<int> sum(n + 1, 0);
+    for (int i = 1; i <= n; i++) {
+      sum[i] = sum[i - 1] + a[i]; 
+    }
+    for (int i = 1; i <= q; i++) {
+      int x, y; cin >> x >> y;
+      int l = n - x + 1; 
+      int r = n - x + y;
+      cout << sum[r] - sum[l - 1] << endl;
+    }
 
   Timer();
   return 0;

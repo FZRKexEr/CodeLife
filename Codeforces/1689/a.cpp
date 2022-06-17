@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  a.cpp
+//  2022-06-11 22:04
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -250,18 +250,10 @@ int power(int a, int b) {
   return ans;
 }
 
-int START_TIME = -1;
 void file() {
 #ifndef ONLINE_JUDGE
-  START_TIME = clock();
   freopen("in.txt", "r", stdin);
   // freopen("out.txt", "w", stdout);
-#endif
-}
-void Timer() {
-#ifndef ONLINE_JUDGE
-  if (START_TIME != -1)
-    cout << endl << 1.0 * (clock() - START_TIME) / CLOCKS_PER_SEC << "s";
 #endif
 }
 
@@ -269,9 +261,49 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
-  %HERE% 
+  int z; cin >> z;  
+  while (z--) {
+    int n, m, k; cin >> n >> m >> k;
+    string a, b; cin >> a >> b;  
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
 
-  Timer();
+    string c;
+    int cnta = 0, cntb = 0;
+    while (a.length() && b.length()) {
+      if (a[0] == b[0]) {
+        cnta = cntb = 0;
+        c += a[0];
+        a = a.substr(1, (int) a.length() - 1);
+      } else {
+        if (a[0] < b[0] && cnta < k) {
+          cnta++; 
+          cntb = 0;
+          c += a[0];
+          a = a.substr(1, (int) a.length() - 1);
+        } else if (a[0] > b[0] && cntb < k) {
+          cntb++;
+          cnta = 0;
+          c += b[0];
+          b = b.substr(1, (int) b.length() - 1);
+        } else {
+          assert(cnta >= k || cntb >= k);
+          if (cnta < k) {
+            cntb = 0;
+            cnta = 1;
+            c += a[0];
+            a = a.substr(1, (int) a.length() - 1);
+          } else {
+            cnta = 0;
+            cntb = 1;
+            c += b[0];
+            b = b.substr(1, (int) b.length() - 1);
+          }
+        }
+      }
+    }
+    cout << c << endl;
+  }
+   
   return 0;
 }

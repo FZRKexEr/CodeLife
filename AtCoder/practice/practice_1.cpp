@@ -1,8 +1,8 @@
 //
-//  %FFILE%
-//  %FDATE%
+//  practice_1.cpp
+//  2022-06-10 13:46
 //
-//  Created by %USER%
+//  Created by liznb
 //  
 
 #include <bits/stdc++.h>
@@ -250,18 +250,10 @@ int power(int a, int b) {
   return ans;
 }
 
-int START_TIME = -1;
 void file() {
 #ifndef ONLINE_JUDGE
-  START_TIME = clock();
   freopen("in.txt", "r", stdin);
   // freopen("out.txt", "w", stdout);
-#endif
-}
-void Timer() {
-#ifndef ONLINE_JUDGE
-  if (START_TIME != -1)
-    cout << endl << 1.0 * (clock() - START_TIME) / CLOCKS_PER_SEC << "s";
 #endif
 }
 
@@ -269,9 +261,9 @@ signed main() {
   //file();
   ios::sync_with_stdio(false); 
   cin.tie(0);
-  
-  %HERE% 
-
-  Timer();
+  string s; 
+  int a, b, c; cin >> a >> b >> c >> s; 
+  cout << a + b + c << " " << s << endl;
+   
   return 0;
 }
