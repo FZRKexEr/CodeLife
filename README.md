@@ -1,6 +1,6 @@
 # CodeLife
 
-日常训练代码/题解归档
+日常训练代码
 
 ## 使用的工具
 
@@ -12,12 +12,3 @@
 - tokyonight.nvim: kitty 和 neovim 的主题
 - asyncrun.vim: 异步运行代码
 - vim-template: 添加模板
-
-## 题解目录
-
-### Codeforces
-
-[1671](题解/1671.md)
-
-### AtCoder
-
